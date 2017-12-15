@@ -1,0 +1,23 @@
+max_lease_ttl = "{{ vault_lease_ttl }}"
+default_lease_ttl = "{{ vault_lease_ttl }}"
+cluster_name = "{{ vault_cluster_name }}"
+disable_mlock = {{ vault_disable_mlock }}
+
+listener "tcp" {
+    address = "{{ vault_bind_address }}:{{ vault_port }}"
+    {% if vault_tls %}
+    tls_disable = false
+    tls_cert_file = "{{ vault_tls_cert_file }}"
+    tls_key_file  = "{{ vault_tls_key_file }}"
+    tls_client_ca_file = "{{ vault_tls_ca_file }}"
+    {% else %}
+    tls_disable = true
+    {% endif %}
+}
+
+{% if vault_backend == "consul" %}
+storage "consul" {
+  address = "{{ vault_consul_address }}"
+  path = "{{ vault_consul_path }}"
+}
+{% endif %}

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+{% if vault_tls  %}
+  {% set proto = 'https' %}
+{% else %}
+  {% set proto = 'http' %}
+{% endif %}
+
+{% if vault_bind_address == '0.0.0.0' %}
+  {% set bind = '127.0.0.1'  %}
+{% else %}
+  {% set bind = vault_bind_address %}
+{% endif %}
+
+# sleep a few seconds
+# Otherwise unseal will fail
+sleep 5
+
+ARRAY=({{ " ".join(vault_unseal_keys) }})
+i=0
+
+until [ `curl {{ proto }}://{{ bind }}:{{ vault_port }}/v1/sys/seal-status 2>/dev/null | jq '.sealed'` == "false" ]; do
+  [[ i -gt {{ vault_unseal_keys|length }} ]] && exit 0
+  curl -X POST {{ proto }}://{{ bind }}:{{ vault_port }}/v1/sys/unseal --data "{ \"key\": \"${ARRAY[i]}\"}"
+  let i++
+done
+

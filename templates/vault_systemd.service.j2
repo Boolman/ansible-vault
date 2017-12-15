@@ -1,0 +1,22 @@
+[Unit]
+Description=HashiCorp Vault Service
+Requires=network-online.target
+After=network-online.target
+
+[Service]
+User={{ vault_user }}
+Group={{ vault_group }}
+Environment=VAULT_ADDR={{ vault_url }}
+Restart=on-failure
+ExecStart=/usr/bin/vault server -config=/etc/opt/vault/vault.hcl
+{% if vault_disable_mlock == 'false' %}
+ExecStartPre=sudo /sbin/setcap cap_ipc_lock=+ep /usr/bin/vault
+{% endif %}
+{% if vault_unseal_script -%}
+ExecStartPost=/bin/bash -c /etc/opt/vault/unseal.sh 
+{% endif -%}
+ExecStop=/usr/bin/vault step-down
+
+
+[Install]
+WantedBy=multi-user.target
