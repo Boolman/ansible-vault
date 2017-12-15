@@ -19,5 +19,7 @@ listener "tcp" {
 storage "consul" {
   address = "{{ vault_consul_address }}"
   path = "{{ vault_consul_path }}"
+  token = "{{ vault_consul_token }}"
+  scheme = "{{ vault_consul_scheme }}"
 }
 {% endif %}
