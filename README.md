@@ -7,6 +7,7 @@ Create the vault-token in consul
 ```
 cat << EOF > vault
 {
+  "ID": "generated uuid",
   "Name": "Vault Token",
   "Type": "client",
   "Rules": "
@@ -32,6 +33,27 @@ EOF
 curl -X PUT --header "X-Consul-Token: $TOKEN" --data @vault http://127.0.0.1:8500/v1/acl/create
 
 ``` 
+
+```
+{
+  "ID": "generated uuid", 
+  "Name": "Agent Token",
+  "Type": "client",
+  "Rules": "node \"\" { policy = \"write\" } service \"\" { policy = \"read\" }"
+}
+```
+
+
+Update anonymous acl ( needed for dns ) 
+
+```
+{
+  "ID":"anonymous",
+  "Name":"Anonymous Token",
+  "Type":"client",
+  "Rules":" node \"\" { policy = \"read\" } service \"\" { policy = \"read\" } "
+}
+```
 
 # Install
 
