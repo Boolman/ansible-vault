@@ -68,7 +68,7 @@ vault write ${INTR_PATH}/intermediate/set-signed certificate=@${UNDER_DOM}.crt
 # Create role for issuing ${DOMAIN} certificates
 # Max least time is 14 days
 echo "Create a role for subdomain certs"
-vault write ${INTR_PATH}/roles/${UNDER_DOM} allowed_domains="${DOMAIN}" lease_max="336h" allow_subdomains=true
+vault write ${INTR_PATH}/roles/${UNDER_DOM} allowed_domains="${DOMAIN}" lease_max="17520h" allow_subdomains=true
 
 # Issue a cert for an ${DOMAIN} subdomain valid for 1 week
 echo "Issue a subdomain cert"
