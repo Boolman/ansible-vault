@@ -1,5 +1,4 @@
-Cmnd_Alias SETCAP = sha256:e5fe4a36ea86d02de6059fb91b063ae7dbae1266541185001230e96c44f4a3ea /sbin/setcap
+Cmnd_Alias SETCAP = sha256:33a678f4069d9d093604aabf9ae91e6047a62f283aafe37d9644cc911249b5b1 /sbin/setcap
 
 # Rules
 vault ALL=(root:root) NOPASSWD: SETCAP
-
