@@ -98,7 +98,7 @@
     register: is_init
 
   - name: Initialize the vault
-    command: vault init
+    command: bash -c "vault init -ca-path={{ vault_tls_ca_file }}"
     register: keys
     environment:
       VAULT_ADDR: "{{ vault_url }}"
