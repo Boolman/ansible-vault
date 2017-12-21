@@ -94,7 +94,7 @@
     when: vault_started|changed
 
   - name: Check if vault is initialized
-    command: bash -c "curl {{ vault_url }}/v1/sys/init 2>/dev/null | jq '.initialized'"
+    command: bash -c "curl -k {{ vault_url }}/v1/sys/init 2>/dev/null | jq '.initialized'"
     register: is_init
 
   - name: Initialize the vault
