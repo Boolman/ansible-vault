@@ -54,6 +54,7 @@
     file:
       state: touch
       dest: "{{ vault_dir }}/.install_state"
+    become: true
 
   - import_tasks: tls.yml
     when: vault_tls | bool
