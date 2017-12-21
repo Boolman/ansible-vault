@@ -3,18 +3,22 @@
   file:
     path: "{{ vault_tls_dir }}"
     state: directory
+  become: true
 
 - name: Copy Certificate
   copy:
     src: "{{ vault_tls_src_cert_file }}"
     dest: "{{ vault_tls_cert_file }}"
+  become: true
 
 - name: Copy Private Key
   copy:
     src: "{{ vault_tls_src_key_file }}"
     dest: "{{ vault_tls_key_file }}"
+  become: true
 
 - name: Copy Root CA
   copy:
     src: "{{ vault_tls_src_ca_file }}"
     dest: "{{ vault_tls_ca_file }}"
+  become: true
