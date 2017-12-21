@@ -98,10 +98,11 @@
     register: is_init
 
   - name: Initialize the vault
-    command: bash -c "vault init -ca-path={{ vault_tls_ca_file }}"
+    command: bash -c "vault init"
     register: keys
     environment:
       VAULT_ADDR: "{{ vault_url }}"
+      VAULT_CACERT: "{{ vault_tls_ca_file }}"
     when: is_init.stdout == 'false'
 
 
