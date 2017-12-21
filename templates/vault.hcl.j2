@@ -4,25 +4,25 @@ cluster_name = "{{ vault_cluster_name }}"
 disable_mlock = "{{ vault_disable_mlock }}"
 
 {% if vault_tls -%}
-{% set proto == 'https' -%}
+{% set proto = 'https' -%}
 {% else -%}
-{% set proto == 'http' -%}
+{% set proto = 'http' -%}
 {% endif -%}
 
-api_addr = "{{ proto }}://{{ vault_bind_address }}:{{ vault_port }}"
-cluster_addr = "{{ proto }}://{{ vault_bind_address }}:{{ vault_port }}"
+api_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
+cluster_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
 
 listener "tcp" {
   address = "{{ vault_bind_address }}:{{ vault_port }}"
-    {% if vault_tls -%}
-    tls_disable = false
-    tls_cert_file = "{{ vault_tls_cert_file }}"
-    tls_key_file  = "{{ vault_tls_key_file }}"
-    tls_client_ca_file = "{{ vault_tls_ca_file }}"
-    {% else -%}
-    tls_disable = true
-    {% endif -%}
-}
+  {% if vault_tls -%}
+  tls_disable = false
+  tls_cert_file = "{{ vault_tls_cert_file }}"
+  tls_key_file  = "{{ vault_tls_key_file }}"
+  tls_client_ca_file = "{{ vault_tls_ca_file }}"
+  {% else -%}
+  tls_disable = true
+  {% endif -%}
+  }
 
 {% if vault_backend == "consul" %}
 storage "consul" {
