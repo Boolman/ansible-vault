@@ -1,0 +1,35 @@
+#Configure LDAP:
+
+vault auth-enable ldap
+vault write auth/ldap/config \
+>         url="ldap://10.127.21.10" \
+>         binddn="cn=gitlab_ldap_user,OU=Service Accounts,dc=int,dc=units,dc=cloud" \
+>         bindpass="xxxxxxxx" \
+>         userdn="OU=Users,OU=Internal,dc=int,dc=units,dc=cloud" \
+>         groupdn="OU=Groups,OU=Internal,DC=int,DC=units,DC=cloud" \
+>         userattr="sAMAccountName" \
+>         groupfilter="(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={{.UserDN}}))" \
+>         groupattr="cn" \
+>         insecure_tls=true
+
+
+# Add policys
+vault policy-write ssh ssh.hcl 
+vault policy-write certificate pki.hcl 
+
+
+# Add policys to groups:
+vault write auth/ldap/groups/Drift policies=ssh
+
+# Create ssh role
+vault write ssh/roles/otp_key_role \
+    key_type=otp \
+    default_user=ubuntu \
+    cidr_list=10.127.0.0/16
+
+
+# Create pki role
+vault write pki/roles/int-units-cloud \
+   allowed_domains="int.units.cloud" \
+   allow_subdomains="true" max_ttl="12000h"
+
