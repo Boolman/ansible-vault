@@ -1,0 +1,20 @@
+---
+- name: Create TLS Dir
+  file:
+    path: "{{ vault_tls_dir }}"
+    state: directory
+
+- name: Copy Certificate
+  copy:
+    src: "{{ vault_tls_cert_file }}"
+    dest: "/etc/opt/vault/vault.cert"
+
+- name: Copy Private Key
+  copy:
+    src: "{{ vault_tls_key_file }}"
+    dest: "/etc/opt/vault/vault.key"
+
+- name: Copy Root CA
+  copy:
+    src: "{{ vault_tls_ca_file }}"
+    dest: "/etc/opt/vault/ca.cert"

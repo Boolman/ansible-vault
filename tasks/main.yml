@@ -38,25 +38,28 @@
     become: true
 
   - name: Create vault config directory
-    file: state=directory path=/etc/opt/vault/
+    file: state=directory path={{ vault_dir }}
     become: true
+
+  - import_tasks: tls.yml
+    when: vault_tls | bool
 
   - name: Generate vault config
     template:
       src: vault.hcl.j2
-      dest: /etc/opt/vault/vault.hcl
+      dest: "{{ vault_dir }}/vault.hcl"
     become: true
 
   - name: Generate Vault systemd script
     template:
-      src: vault_systemd.service.j2 
+      src: vault_systemd.service.j2
       dest: /etc/systemd/system/vault.service
     become: true
 
   - name: Generate unseal script
     template:
       src: unseal.sh.j2
-      dest: /etc/opt/vault/unseal.sh
+      dest: "{{ vault_dir }}/unseal.sh"
       mode: 0755
     become: true
     when: vault_unseal_script
@@ -85,5 +88,5 @@
       VAULT_ADDR: "{{ vault_url }}"
     when: is_init.stdout == 'false'
 
-  - debug: msg="{{ keys }}"
 
+  - debug: msg="{{keys}}"

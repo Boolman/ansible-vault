@@ -1,11 +1,18 @@
 vault_user: "vault"
 vault_group: "vault"
+vault_dir: "/etc/opt/vault"
+
 
 # TLS/SSL
 vault_tls: false
-vault_tls_cert_file: "/etc/opt/vault/ssl/vault.cert"
-vault_tls_key_file: "/etc/opt/vault/ssl/vault.key"
-vault_tls_ca_file: "/etc/opt/vault/ssl/ca.cert"
+vault_tls_dir: "{{ vault_dir }}/ssl"
+vault_tls_src_cert_file: "{{ role_path }}/files/vault.cert"
+vault_tls_src_key_file: "{{ role_path }}/files/vault.key"
+vault_tls_src_ca_file: "{{ role_path }}/files/ca.cert"
+
+vault_tls_cert_file: "{{ vault_tls_dir }}/vault.cert"
+vault_tls_key_file: "{{ vault_tls_dir }}/vault.key"
+vault_tls_ca_file: "{{ vault_tls_dir }}/ca.cert"
 
 # Networking
 vault_bind_address: "0.0.0.0"
