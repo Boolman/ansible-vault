@@ -1,10 +1,10 @@
 max_lease_ttl = "{{ vault_lease_ttl }}"
 default_lease_ttl = "{{ vault_lease_ttl }}"
 cluster_name = "{{ vault_cluster_name }}"
-disable_mlock = {{ vault_disable_mlock }}
+disable_mlock = "{{ vault_disable_mlock }}"
 
 listener "tcp" {
-    address = "{{ vault_bind_address }}:{{ vault_port }}"
+  address = "{{ vault_bind_address }}:{{ vault_port }}"
     {% if vault_tls %}
     tls_disable = false
     tls_cert_file = "{{ vault_tls_cert_file }}"
