@@ -35,6 +35,14 @@
     file: state=directory path={{ vault_dir }}
     become: true
 
+  - name: Create Vault audit directory
+    file:
+      state: directory
+      path: /var/log/vault
+      owner: {{ vault_user }}
+      group: {{ vault_group }}
+    become: true
+
   - name: Read bootstrapped state
     stat:
       path: "{{ vault_dir }}/.installed"
