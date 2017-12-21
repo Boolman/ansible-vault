@@ -3,16 +3,25 @@ default_lease_ttl = "{{ vault_lease_ttl }}"
 cluster_name = "{{ vault_cluster_name }}"
 disable_mlock = "{{ vault_disable_mlock }}"
 
+{% if vault_tls -%}
+{% set proto == 'https' -%}
+{% else -%}
+{% set proto == 'http' -%}
+{% endif -%}
+
+api_addr = "{{ proto }}://{{ vault_bind_address }}:{{ vault_port }}"
+cluster_addr = "{{ proto }}://{{ vault_bind_address }}:{{ vault_port }}"
+
 listener "tcp" {
   address = "{{ vault_bind_address }}:{{ vault_port }}"
-    {% if vault_tls %}
+    {% if vault_tls -%}
     tls_disable = false
     tls_cert_file = "{{ vault_tls_cert_file }}"
     tls_key_file  = "{{ vault_tls_key_file }}"
     tls_client_ca_file = "{{ vault_tls_ca_file }}"
-    {% else %}
+    {% else -%}
     tls_disable = true
-    {% endif %}
+    {% endif -%}
 }
 
 {% if vault_backend == "consul" %}
@@ -20,8 +29,8 @@ storage "consul" {
   address = "{{ vault_consul_address }}"
   path = "{{ vault_consul_path }}"
   scheme = "{{ vault_consul_scheme }}"
-  {% if vault_consul_acl %}
+  {% if vault_consul_acl -%}
   token = "{{ vault_consul_token }}"
-  {% endif %}
+  {% endif -%}
 }
 {% endif %}
