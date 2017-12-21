@@ -13,7 +13,7 @@ api_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
 cluster_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
 
 listener "tcp" {
-  address = "{{ vault_bind_address }}:{{ vault_port }}"
+  address = "{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
   {% if vault_tls -%}
   tls_disable = false
   tls_cert_file = "{{ vault_tls_cert_file }}"
@@ -22,7 +22,13 @@ listener "tcp" {
   {% else -%}
   tls_disable = true
   {% endif -%}
-  }
+}
+
+listener "tcp" {
+  address = "127.0.0.1:8200"
+  tls_disable = true
+}
+
 
 {% if vault_backend == "consul" %}
 storage "consul" {

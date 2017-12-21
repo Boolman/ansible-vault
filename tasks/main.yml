@@ -94,15 +94,14 @@
     when: vault_started|changed
 
   - name: Check if vault is initialized
-    command: bash -c "curl -k {{ vault_url }}/v1/sys/init 2>/dev/null | jq '.initialized'"
+    command: bash -c "curl http://127.0.0.1:8200/v1/sys/init 2>/dev/null | jq '.initialized'"
     register: is_init
 
   - name: Initialize the vault
     command: bash -c "vault init"
     register: keys
     environment:
-      VAULT_ADDR: "{{ vault_url }}"
-      VAULT_CACERT: "{{ vault_tls_ca_file }}"
+      VAULT_ADDR: "http://127.0.0.1:8200"
     when: is_init.stdout == 'false'
 
 
