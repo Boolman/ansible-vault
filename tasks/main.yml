@@ -30,6 +30,10 @@
     when: vault_user != "root"
     become: true
 
+  - name: Create vault config directory
+    file: state=directory path={{ vault_dir }}
+    become: true
+
   - name: Read bootstrapped state
     stat:
       path: "{{ vault_dir }}/.installed"
@@ -49,10 +53,6 @@
     file:
       state: touch
       dest: "{{ vault_dir }}/.install_state"
-
-  - name: Create vault config directory
-    file: state=directory path={{ vault_dir }}
-    become: true
 
   - import_tasks: tls.yml
     when: vault_tls | bool
@@ -76,7 +76,7 @@
       mode: 0755
     become: true
     when: vault_unseal_script
-    
+
 
   - name: Start vault service
     systemd:

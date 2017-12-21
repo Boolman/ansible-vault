@@ -31,6 +31,7 @@ vault_version: "0.9.0"
 vault_backend: "consul"
 
 # Consul-backend
+vault_consul_acl: false
 vault_consul_address: "http://127.0.0.1:8500"
 vault_consul_path: "vault/"
 vault_consul_token: ""
