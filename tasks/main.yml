@@ -30,12 +30,25 @@
     when: vault_user != "root"
     become: true
 
+  - name: Read bootstrapped state
+    stat:
+      path: "{{ vault_dir }}/.installed"
+    register: install_state
+    ignore_errors: true
+
+
   - name: download and install vault binary
     unarchive:
       src: "https://releases.hashicorp.com/vault/{{ vault_version }}/vault_{{ vault_version }}_linux_amd64.zip"
       dest: /usr/bin/
       remote_src: True
     become: true
+    when: not install_state.stat.exists
+
+  - name: Create bootstrapped state
+    file:
+      state: touch
+      dest: "{{ vault_dir }}/.install_state"
 
   - name: Create vault config directory
     file: state=directory path={{ vault_dir }}
@@ -63,6 +76,7 @@
       mode: 0755
     become: true
     when: vault_unseal_script
+    
 
   - name: Start vault service
     systemd:
