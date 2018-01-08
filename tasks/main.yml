@@ -39,8 +39,8 @@
     file:
       state: directory
       path: /var/log/vault
-      owner: {{ vault_user }}
-      group: {{ vault_group }}
+      owner: "{{ vault_user }}"
+      group: "{{ vault_group }}"
     become: true
 
   - name: Read bootstrapped state
