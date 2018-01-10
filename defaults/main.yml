@@ -18,6 +18,7 @@ vault_tls_ca_file: "{{ vault_tls_dir }}/ca.cert"
 vault_bind_address: "0.0.0.0"
 vault_url: "http://127.0.0.1:8200"
 vault_port: "8200"
+vault_cluster_port: "8201"
 
 vault_cluster_name: "default"
 vault_lease_ttl: "10h"

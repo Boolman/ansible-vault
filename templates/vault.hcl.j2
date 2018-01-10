@@ -10,7 +10,7 @@ disable_mlock = "{{ vault_disable_mlock }}"
 {% endif -%}
 
 api_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
-cluster_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
+cluster_addr = "{{ proto }}://{{ ansible_all_ipv4_addresses[0] }}:{{ vault_cluster_port }}"
 
 listener "tcp" {
   address = "{{ ansible_all_ipv4_addresses[0] }}:{{ vault_port }}"
