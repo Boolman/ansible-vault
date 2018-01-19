@@ -65,7 +65,10 @@ vault_unseal_script: true
 vault_unseal_keys: [ '"12314"', '"12313"', '"124124"' ]
 ```
 
+# Configure
 
+
+## Add roles
 ```
 vault write auth/ldap/config \
         url="ldap://10.127.21.10,ldap://10.127.21.11" \
@@ -88,6 +91,7 @@ vault write ssh/roles/otp_key_role \
 ```
 
 
+## Add Policies
 
 ```
 #cat pki.hcl 
@@ -104,5 +108,8 @@ path "/ssh/creds/otp_key_role" {
 ```
 vault policy-write ssh ssh.hcl
 vault policy-write certificate pki.hcl
+
+
+## Add policies to LDAP-Groups
 vault write auth/ldap/Drift policies=ssh,certificate
 
