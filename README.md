@@ -64,3 +64,45 @@ If you want to unseal during startup, change unseal vars to your situation.
 vault_unseal_script: true
 vault_unseal_keys: [ '"12314"', '"12313"', '"124124"' ]
 ```
+
+
+
+vault write auth/ldap/config \
+        url="ldap://10.127.21.10,ldap://10.127.21.11" \
+        binddn="cn=vault_ldap_user,OU=Service Accounts,dc=int,dc=units,dc=cloud" \
+        bindpass="password" \
+        userdn="OU=Users,OU=Internal,dc=int,dc=units,dc=cloud" \
+        groupdn="OU=Groups,OU=Internal,DC=int,DC=units,DC=cloud" \
+        userattr="sAMAccountName" \
+        groupfilter="(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={{.UserDN}}))" \
+        groupattr="cn" \
+        insecure_tls=true \
+        starttls=false
+
+
+vault write ssh/roles/otp_key_role \
+    key_type=otp \
+    default_user=ubuntu \
+    cidr_list=10.127.0.0/16 \
+    allowed_users=""
+
+
+
+
+```
+#cat pki.hcl 
+path "/intermediate_ca/issue/int_units_cloud" {
+    capabilities = [ "update" ]
+}
+```
+
+```
+#cat ssh.hcl 
+path "/ssh/creds/otp_key_role" {
+    capabilities = [ "update" ]
+}
+```
+vault policy-write ssh ssh.hcl
+vault policy-write certificate pki.hcl
+vault write auth/ldap/Drift policies=ssh,certificate
+
