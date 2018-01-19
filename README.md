@@ -66,7 +66,7 @@ vault_unseal_keys: [ '"12314"', '"12313"', '"124124"' ]
 ```
 
 
-
+```
 vault write auth/ldap/config \
         url="ldap://10.127.21.10,ldap://10.127.21.11" \
         binddn="cn=vault_ldap_user,OU=Service Accounts,dc=int,dc=units,dc=cloud" \
@@ -85,7 +85,7 @@ vault write ssh/roles/otp_key_role \
     default_user=ubuntu \
     cidr_list=10.127.0.0/16 \
     allowed_users=""
-
+```
 
 
 
