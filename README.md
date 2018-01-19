@@ -67,8 +67,7 @@ vault_unseal_keys: [ '"12314"', '"12313"', '"124124"' ]
 
 # Configure
 
-
-## Add roles
+## LDAP
 ```
 vault write auth/ldap/config \
         url="ldap://10.127.21.10,ldap://10.127.21.11" \
@@ -82,7 +81,12 @@ vault write auth/ldap/config \
         insecure_tls=true \
         starttls=false
 
+```
 
+## Add roles
+
+
+```
 vault write ssh/roles/otp_key_role \
     key_type=otp \
     default_user=ubuntu \
