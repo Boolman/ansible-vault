@@ -29,7 +29,6 @@ listener "tcp" {
   tls_disable = true
 }
 
-
 {% if vault_backend == "consul" %}
 storage "consul" {
   address = "{{ vault_consul_address }}"
@@ -38,5 +37,12 @@ storage "consul" {
   {% if vault_consul_acl -%}
   token = "{{ vault_consul_token }}"
   {% endif -%}
+  {% if vault_consul_scheme == "https" %}
+  tls_ca_file   = "/etc/ssl/int_units_cloud.pem"
+  tls_cert_file = "/etc/ssl/{{ ansible_fqdn }}.crt"
+  tls_key_file  = "/etc/ssl/{{ ansible_fqdn }}.key"
+  tls_skip_verify = "true"
+  {% endif %}
+
 }
 {% endif %}
