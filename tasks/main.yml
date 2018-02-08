@@ -60,7 +60,7 @@
       dest: /usr/bin/
       remote_src: True
     become: true
-    when: not install_state.stat.exists or "{{ vault_version | version_compare(version.stdout, operator='ne') }}"
+    when: not install_state.stat.exists or "{{ vault_version | version_compare(current_version.stdout, operator='ne') }}"
 
   - name: Create bootstrapped state
     file:
