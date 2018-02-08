@@ -49,6 +49,10 @@
     register: install_state
     ignore_errors: true
 
+  - name: Check current vault version
+    shell: "vault --version | awk -F 'v' '{print $2}' | awk '{print $1}'"
+    register: current_version
+    ignore_errors: true  
 
   - name: download and install vault binary
     unarchive:
@@ -56,7 +60,7 @@
       dest: /usr/bin/
       remote_src: True
     become: true
-    when: not install_state.stat.exists
+    when: not install_state.stat.exists or "{{ vault_version | version_compare(version.stdout, operator='ne') }}"
 
   - name: Create bootstrapped state
     file:
