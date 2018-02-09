@@ -50,7 +50,7 @@
     ignore_errors: true
 
   - name: Check current vault version
-    shell: "vault --version | awk -F 'v' '{print $2}' | awk '{print $1}'"
+    shell: "test -x /usr/bin/vault && vault --version | awk -F 'v' '{print $2}' | awk '{print $1}' || echo 0"
     register: current_version
     ignore_errors: true  
 
