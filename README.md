@@ -70,11 +70,11 @@ vault_unseal_keys: [ '"12314"', '"12313"', '"124124"' ]
 ## LDAP
 ```
 vault write auth/ldap/config \
-        url="ldap://10.127.21.10,ldap://10.127.21.11" \
-        binddn="cn=vault_ldap_user,OU=Service Accounts,dc=int,dc=units,dc=cloud" \
+        url="ldap://10.1.2.10,ldap://10.1.2.11" \
+        binddn="cn=vault_ldap_user,OU=Service Accounts,dc=int,dc=example,dc=com" \
         bindpass="password" \
-        userdn="OU=Users,OU=Internal,dc=int,dc=units,dc=cloud" \
-        groupdn="OU=Groups,OU=Internal,DC=int,DC=units,DC=cloud" \
+        userdn="OU=Users,OU=Internal,dc=int,dc=example,dc=com" \
+        groupdn="OU=Groups,OU=Internal,DC=int,DC=example,DC=com" \
         userattr="sAMAccountName" \
         groupfilter="(&(objectClass=group)(member:1.2.840.113556.1.4.1941:={{.UserDN}}))" \
         groupattr="cn" \
@@ -90,7 +90,7 @@ vault write auth/ldap/config \
 vault write ssh/roles/otp_key_role \
     key_type=otp \
     default_user=ubuntu \
-    cidr_list=10.127.0.0/16 \
+    cidr_list=10.7.0.0/16 \
     allowed_users=""
 ```
 
@@ -99,7 +99,7 @@ vault write ssh/roles/otp_key_role \
 
 ```
 #cat pki.hcl 
-path "/intermediate_ca/issue/int_units_cloud" {
+path "/intermediate_ca/issue/int_example_com" {
     capabilities = [ "update" ]
 }
 ```
